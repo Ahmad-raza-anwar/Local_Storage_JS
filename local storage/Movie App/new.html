@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+
+  <style>
+
+    body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container{
+      width: 250px;
+      height: 50px;
+      /* background-color: lightcoral; */
+      position: relative;
+    }
+    .main{
+      margin: 20px;
+      display: flex;      
+      position: absolute;
+      left: 0;
+      visibility: hidden;
+    }
+    .circle{
+      width: 20px;
+      height: 20px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      margin: 5px;
+      background-color: gray;
+      cursor: pointer;
+    }
+    .active{
+      background-color: red;
+    }
+    .show{
+      visibility: visible;
+    }
+
+  </style>
+
+</head>
+<body>
+  
+
+  <select id="movie">
+    <option value="10">Spiderman: No Way Home ($10)</option>
+    <option value="12">The Batman ($12)</option>
+    <option value="8">The Matrix ($8)</option>
+    <option value="9">Last Night in Soho ($9)</option>
+  </select>
+
+  <div class="container">
+    <div class="main main1" id="10">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle active"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div>
+    <div class="main main2" id="12">
+      <div class="circle active"></div>
+      <div class="circle active"></div>
+      <div class="circle active"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div>
+    <div class="main main3" id="8">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle active"></div>
+    </div>
+    <div class="main main4" id="9">
+      <div class="circle"></div>
+      <div class="circle active"></div>
+      <div class="circle active"></div>
+      <div class="circle active"></div>
+      <div class="circle active"></div>
+      <div class="circle active"></div>
+      <div class="circle active"></div>
+    </div>
+  </div>
+  <p class="text">
+    You have selected <span id="count">0</span> seats for a price of $<span id="total">0</span>
+  </p>
+
+
+
+  <script>
+
+    const circles = document.querySelectorAll(".circle");
+    circles.forEach(function(e){
+      e.addEventListener("click", function(){
+        e.classList.toggle("active")
+      })
+    })
+
+
+    const select = document.querySelector("select");
+    let main = document.querySelectorAll(".main")
+
+    main.forEach(function(e) {
+      e.classList.remove("show")
+      if(e.id === "10"){
+        e.classList.add("show")
+      }
+    })
+
+      select.addEventListener("change", function(e){
+          console.log(select.value);
+          main.forEach(function(e) {
+            e.classList.remove("show")
+            if(select.value === e.id){
+              e.classList.add("show")
+              selectedseats(e)
+            }
+          })
+      })
+      
+      function selectedseats(item) {
+        let childs = item.children;
+          // console.log(...childs);
+        [...childs].forEach(function(e){
+          if(e.classList.contains("active")){
+            console.log(e);
+          }
+
+        }) 
+      }
+
+      
+    
+    
+    
+
+  </script>
+
+</body>
+</html>

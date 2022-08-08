@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>New Tab App</title>
+   <style>
+      .btn{
+         margin-left: 30px;
+      }
+      li{
+        font-size: 20px;
+        word-spacing: 10px;
+      }
+   </style>
+</head>
+<body>
+  <audio id="audio">
+    <source src="./sound/sound.mp3">
+  </audio>
+
+   <div class="small-container">
+      <h1>New Tab App</h1>
+      <form>
+         <input id="item" type="text" placeholder="Meeting Name">
+         <input id="time" type="time" placeholder="Time">
+         <input id="meeting" type="text" placeholder="Meeting Person">
+         <button class="btn">add</button>
+        </form>
+        <h2>Items</h2>
+        <ul></ul>
+      <button class="clear">Clear All</button>  
+    </div>
+    
+    <script>
+
+      let audio = document.getElementById("audio");
+    let aud = new Audio("./sound/sound.mp3")
+    // console.log(aud);
+
+    // setInterval(() => {
+      // }, 1000);
+      
+      const form = document.querySelector('form');
+      const ul = document.querySelector('ul');
+      const addbtn = document.querySelector('.btn');
+      const button = document.querySelector('.clear');
+      const input = document.getElementById('item');
+      const inputTime = document.getElementById('time');
+      const inputName = document.getElementById('meeting');
+      
+      // var data = [];
+      // var hello = localStorage.getItem("data");
+      // console.log(hello+"getitem");
+      var data = localStorage.getItem("data")?JSON.parse(localStorage.getItem("data")):[];
+      // console.log(data);
+      let del;
+      
+      let inter = setInterval(() => {
+        let time = new Date;
+        let hours = time.getHours();
+        let min = time.getMinutes();
+        if(min < 10){
+          min = "0" + min
+        }
+        let newtime = hours + ":" + min
+        // console.log(newtime);
+        var dd = data.filter(function(i, index){
+          return i.meetingTime == newtime
+        })
+        if(dd){
+          aud.play()
+        }
+        // console.log(dd);
+      }, 1000);
+      
+      
+      let obj = {name:"", meetingTime:"", person:""}
+      
+      const liMaker = (text, index) => {
+        var li = document.createElement("li")
+        // console.log(text + "text");
+        li.innerHTML = text.name + " " + text.meetingTime + " " +  text.person;
+        ul.appendChild(li)
+        
+        var update = document.createElement("button")
+        update.innerHTML = "Update"
+        update.classList.add("btn")
+        li.appendChild(update)
+         
+         var del = document.createElement("button")
+         del.innerHTML = "Delete"
+         li.appendChild(del)
+         
+         var up = document.createElement("button")
+         up.innerHTML = "up"
+         li.appendChild(up)
+         
+         var down = document.createElement("button")
+         down.innerHTML = "down"
+         li.appendChild(down)
+         
+         
+         
+         
+         del.addEventListener("click", function(){
+          //  console.log(index, data.splice(index, 1)); 
+          var newData = data
+          // console.log(newData,"update");
+          console.log(newData + "newdata");
+          newData.splice(index, 1)
+        localStorage.setItem("data", JSON.stringify(newData))
+        location.reload()
+        
+      })
+      up.addEventListener("click", function(){
+        var updata = data
+        upper(index)
+        console.log(index,"index");
+      })
+
+      down.addEventListener("click", function(){
+        var updata = data
+          // downtext(index)
+        })
+        
+        
+        update.addEventListener("click", function(){
+          var newData = data
+          // console.log(this.innerHTML);
+          if(this.innerHTML=="Update"){
+            input.value=newData[index]
+            this.innerHTML="edit"
+          }
+          else if(this.innerHTML=="edit"){
+            edit(index)
+            this.innerHTML="Update"
+                input.value=""
+              }
+            })
+          }
+          
+          function upper(i) {
+      var updata = data
+      if(updata[i - 1]){
+        var currentdata = updata[i]
+        updata[i] = updata[i - 1]
+        updata[i - 1] = currentdata
+      }
+      else{
+        alert("not found")
+      }
+      
+      localStorage.setItem("data", JSON.stringify(updata))
+      location.reload()
+    }
+    
+    function downtext(i) {
+      var downdata = data
+      if(downdata[i + 1]){
+        var currData = downdata[i]
+        downdata[i] = downdata[i + 1]
+        downdata[i + 1] = currData
+      }
+      else{
+        alert("not found")
+      }
+      
+      localStorage.setItem("data", JSON.stringify(downdata))
+      location.reload()
+    }
+    
+    function edit(i) {
+      var updated = data
+      let value = input.value
+      updated[i] = value
+      localStorage.setItem("data", JSON.stringify(updated))
+      location.reload()
+    }
+
+    addbtn.addEventListener('click', function(e){
+         e.preventDefault()
+            
+         obj.name = input.value
+         obj.meetingTime = inputTime.value
+         obj.person = inputName.value
+         input.value=""
+         inputTime.value=""
+         inputName.value=""
+         data.push(obj)
+        //  console.log(data);
+        //  liMaker(i)
+        localStorage.setItem("data", JSON.stringify(data))
+         location.reload()
+        })
+        
+        data.forEach((item,index)=>{
+          liMaker(item, index)
+          //  console.log(item + "item");
+        })
+        
+       button.addEventListener("click", function(){
+         localStorage.clear()
+         while(ul.firstChild){
+           ul.removeChild(ul.firstChild);
+            }   
+         data = [];
+       })
+
+
+   </script>
+</body>
+</html>

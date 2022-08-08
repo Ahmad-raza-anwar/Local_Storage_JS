@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visit App</title>
+  
+  <style>
+
+    *{
+      padding: 0;
+      margin: 0;
+      font-size: 25px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    button{
+      padding: 10px 15px;
+      background-color: darkorchid;
+      color: white;
+      border: none;
+      border-radius: 10px;
+    }
+
+  </style>
+
+</head>
+<body>
+
+  <span>You have been here </span>
+  <span id="visit-times">##NOT LOADED##</span>
+  <span> time(s).</span>
+  <button>Clear Visits</button>
+
+  <script>
+
+      var count = localStorage.getItem("visit");
+      if(count == null) {
+        count = 0;
+      } else {
+        count = parseInt(count);
+      }
+      count++;
+      localStorage.setItem("visit", count)
+      document.getElementById("visit-times").textContent = count;
+    
+      let btn = document.querySelector("button");
+
+      btn.addEventListener("click", function(){
+        localStorage.clear();
+        location.reload()
+      })
+
+  </script>
+
+</body>
+</html>

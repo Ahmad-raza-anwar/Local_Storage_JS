@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>New Tab App</title>
+</head>
+<body>
+   <div class="small-container">
+      <h1>New Tab App</h1>
+      <form>
+         <input id="item" type="text" placeholder="New">
+      </form>
+      <h2>Items</h2>
+      <ul></ul>
+      <button>Clear All</button>
+   </div>
+
+   <script>
+
+      const form = document.querySelector('form');
+      const ul = document.querySelector('ul');
+      const button = document.querySelector('button');
+      const input = document.getElementById('item');
+
+      // var data = [];
+      // var hello = localStorage.getItem("data");
+      // console.log(hello+"getitem");
+      var data = localStorage.getItem("data") ? JSON.parse(localStorage.getItem("data")):[];
+      console.log(data);
+
+
+      const liMaker = (text) => {
+         var li = document.createElement("li")
+         li.innerHTML = text;
+         ul.appendChild(li)
+      }
+
+      form.addEventListener('submit', function(e){
+         e.preventDefault()
+            data.push(input.value)
+            localStorage.setItem("data", JSON.stringify(data))
+            // console.log(localStorage);
+            liMaker(input.value)
+            input.value=""
+      })
+
+      data.forEach((item,index)=>{
+         liMaker(item)
+      })
+
+       button.addEventListener("click", function(){
+          localStorage.clear();
+          while(ul.firstChild){
+             ul.removeChild(ul.firstChild);
+            }   
+            data = [];
+       })
+
+      // let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+
+      // // localStorage.setItem('items', JSON.stringify(itemsArray));
+      // // const data = JSON.parse(localStorage.getItem('items'));
+
+      // const liMaker = (text) => {
+      //    const li = document.createElement('li');
+      //    li.textContent = text;
+      //    ul.appendChild(li);
+      // }
+
+      // form.addEventListener('submit', function(e){
+      //    e.preventDefault();
+      //    itemsArray.push(input.value);
+      //    localStorage.setItem('items', JSON.stringify(itemsArray));
+      //    liMaker(input.value);
+      //    input.value = "";
+      // });
+
+      // itemsArray.forEach((item,index)=>{
+      //    liMaker(item);
+      // });
+
+      // button.addEventListener('click', function(){
+      //    itemsArray = [];
+      //    // localStorage.clear();
+      //    while(ul.firstChild){
+      //       ul.removeChild(ul.firstChild);
+      //    }
+      // });
+
+   </script>
+</body>
+</html>

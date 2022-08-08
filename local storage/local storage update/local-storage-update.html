@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>New Tab App</title>
+   <style>
+      .btn{
+         margin-left: 30px;
+      }
+   </style>
+</head>
+<body>
+   <div class="small-container">
+      <h1>New Tab App</h1>
+      <form>
+         <input id="item" type="text" placeholder="New">
+      </form>
+      <h2>Items</h2>
+      <ul></ul>
+      <button>Clear All</button>
+   </div>
+
+   <script>
+
+      const form = document.querySelector('form');
+      const ul = document.querySelector('ul');
+      const button = document.querySelector('button');
+      const input = document.getElementById('item');
+
+      // var data = [];
+      // var hello = localStorage.getItem("data");
+      // console.log(hello+"getitem");
+      var data = localStorage.getItem("data")?JSON.parse(localStorage.getItem("data")):[];
+      // console.log(data);
+      let del;
+// data.sp
+      const liMaker = (text,index) => {
+         var li = document.createElement("li")
+        //  var btn = document
+         li.innerHTML = text;
+         li.classList.add("list")
+         ul.appendChild(li)
+         
+         var update = document.createElement("button")
+         update.innerHTML = "Update"
+         update.classList.add("btn")
+         li.appendChild(update)
+
+         var del = document.createElement("button")
+         del.innerHTML = "Delete"
+         li.appendChild(del)
+
+         var up = document.createElement("button")
+         up.innerHTML = "up"
+         li.appendChild(up)
+
+         var down = document.createElement("button")
+         down.innerHTML = "down"
+         li.appendChild(down)
+
+
+         
+         
+         del.addEventListener("click", function(){
+           // console.log(index, data.splice(index, 1));
+           var newData = data
+           newData.splice(index, 1)
+        // console.log(dataa);
+        localStorage.setItem("data", JSON.stringify(newData))
+        // localStorage.getItem(dataa)
+        location.reload()
+        
+      })
+      up.addEventListener("click", function(){
+        var updata = data
+          upper(index)
+      })
+
+      down.addEventListener("click", function(){
+        var updata = data
+          downtext(index)
+      })
+      
+      
+      update.addEventListener("click", function(){
+        var newData = data
+        console.log(this.innerHTML);
+        if(this.innerHTML=="Update"){
+          input.value=newData[index]
+          this.innerHTML="edit"
+        }
+        else if(this.innerHTML=="edit"){
+          edit(index)
+                this.innerHTML="Update"
+                input.value=""
+              }
+            })
+            
+
+    }
+
+    function upper(i) {
+      var updata = data
+      if(updata[i - 1]){
+        var currentdata = updata[i]
+        updata[i] = updata[i - 1]
+        updata[i - 1] = currentdata
+      }
+      else{
+        alert("not found")
+      }
+
+      localStorage.setItem("data", JSON.stringify(updata))
+      location.reload()
+    }
+
+    function downtext(i) {
+      var downdata = data
+      if(downdata[i + 1]){
+        var currData = downdata[i]
+        downdata[i] = downdata[i + 1]
+        downdata[i + 1] = currData
+      }
+      else{
+        alert("not found")
+      }
+
+      localStorage.setItem("data", JSON.stringify(downdata))
+      location.reload()
+    }
+    
+    function edit(i) {
+      var updated = data
+      let value = input.value
+      updated[i] = value
+      localStorage.setItem("data", JSON.stringify(updated))
+      location.reload()
+    }
+    
+    
+    
+    
+    
+    //  function edit(i){
+      //    console.log(i);
+  //    var updatedData = data
+  //    var value = input.value
+  //    console.log(value);
+  //         updatedData[i]=value
+  //         localStorage.setItem("data", JSON.stringify(updatedData))
+  //         location.reload()
+  //  }
+
+      form.addEventListener('submit', function(e){
+         e.preventDefault()
+            data.push(input.value)
+            localStorage.setItem("data", JSON.stringify(data))
+            //  let clear = localStorage.getItem(data[0])
+            // console.log(clear);
+            liMaker(input.value)
+            input.value=""
+      })
+
+      data.forEach((item,index)=>{
+         liMaker(item, index)
+         
+      })
+
+       button.addEventListener("click", function(){
+         localStorage.clear()
+         while(ul.firstChild){
+             ul.removeChild(ul.firstChild);
+            }   
+         data = [];
+       })
+
+
+   </script>
+</body>
+</html>
